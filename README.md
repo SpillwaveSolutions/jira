@@ -13,7 +13,7 @@ Claude Code can discover and use MCP tools automatically, but skills provide the
 
 ## How This Skill Works
 
-This skill works hand-in-glove with the **Atlassian MCP server** (`mcp__atlassian-evinova`). The MCP provides raw access to JIRA's API capabilities, while this skill provides:
+This skill works hand-in-glove with the **Atlassian MCP server** (`mcp__atlassian`). The MCP provides raw access to JIRA's API capabilities, while this skill provides:
 
 - **Structured workflows** for common JIRA operations
 - **Field discovery patterns** for handling custom fields
@@ -126,7 +126,7 @@ Each workspace can have its own `.mcp.json` file with JIRA credentials:
 ```json
 {
   "mcpServers": {
-    "atlassian-evinova": {
+    "atlassian": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-atlassian"],
       "env": {
@@ -168,7 +168,7 @@ Configure in `~/.claude/mcp.json` or workspace-level `.mcp.json`:
 ```json
 {
   "mcpServers": {
-    "atlassian-evinova": {
+    "atlassian": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-atlassian"],
       "env": {
@@ -225,7 +225,7 @@ Create or update `.mcp.json` at the appropriate level:
 ```json
 {
   "mcpServers": {
-    "atlassian-evinova": {
+    "atlassian": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-atlassian"],
       "env": {
