@@ -16,7 +16,7 @@ This skill provides intelligent JIRA management capabilities including:
 ## Prerequisites
 
 ### Required MCP Server
-- **Atlassian MCP** (`mcp__atlassian-evinova`) must be configured in Claude Code
+- **Atlassian MCP** (`mcp__atlassian`) must be configured in Claude Code
 - JIRA credentials (API token or OAuth) must be set up
 - Appropriate JIRA permissions for the operations you need
 
@@ -43,19 +43,19 @@ Ask the user for:
 - **Additional fields** (components, labels, custom fields)
 
 #### Step 2: Validate Project
-Use `mcp__atlassian-evinova__jira_get_all_projects` to:
+Use `mcp__atlassian__jira_get_all_projects` to:
 - Verify project exists
 - Get available projects if user unsure
 - Confirm project key matches exactly
 
 #### Step 3: Search Available Fields (if needed)
-Use `mcp__atlassian-evinova__jira_search_fields` to:
+Use `mcp__atlassian__jira_search_fields` to:
 - Find custom field names and IDs
 - Understand field requirements
-- Example: `mcp__atlassian-evinova__jira_search_fields` with keyword "epic"
+- Example: `mcp__atlassian__jira_search_fields` with keyword "epic"
 
 #### Step 4: Create Issue
-Use `mcp__atlassian-evinova__jira_create_issue` with:
+Use `mcp__atlassian__jira_create_issue` with:
 ```json
 {
   "project_key": "PROJ",
@@ -73,15 +73,15 @@ Use `mcp__atlassian-evinova__jira_create_issue` with:
 ```
 
 #### Step 5: Follow-up Actions (if needed)
-- Link to epic: `mcp__atlassian-evinova__jira_link_to_epic`
+- Link to epic: `mcp__atlassian__jira_link_to_epic`
 - Add attachments: Include in update or create
-- Add comments: `mcp__atlassian-evinova__jira_add_comment`
-- Create issue links: `mcp__atlassian-evinova__jira_create_issue_link`
+- Add comments: `mcp__atlassian__jira_add_comment`
+- Create issue links: `mcp__atlassian__jira_create_issue_link`
 
 ### 2. Issue Search and Management
 
 #### Searching Issues
-Use `mcp__atlassian-evinova__jira_search` with JQL:
+Use `mcp__atlassian__jira_search` with JQL:
 
 **Note:** For comprehensive JQL documentation including advanced queries, historical operators,
 sprint/epic management, date functions, and best practices, see `references/jql_guide.md`.
@@ -123,14 +123,14 @@ Parameters:
 - `start_at`: Pagination offset
 
 #### Getting Issue Details
-Use `mcp__atlassian-evinova__jira_get_issue`:
+Use `mcp__atlassian__jira_get_issue`:
 - `issue_key`: "PROJ-123"
 - `fields`: Comma-separated or "*all"
 - `expand`: "renderedFields", "transitions", "changelog"
 - `comment_limit`: Number of comments to include
 
 #### Updating Issues
-Use `mcp__atlassian-evinova__jira_update_issue`:
+Use `mcp__atlassian__jira_update_issue`:
 ```json
 {
   "issue_key": "PROJ-123",
@@ -149,12 +149,12 @@ Use `mcp__atlassian-evinova__jira_update_issue`:
 ### 3. Workflow and Transitions
 
 #### Get Available Transitions
-Use `mcp__atlassian-evinova__jira_get_transitions`:
+Use `mcp__atlassian__jira_get_transitions`:
 - Returns list of valid transitions for current issue state
 - Each transition has an ID and name
 
 #### Transition Issue
-Use `mcp__atlassian-evinova__jira_transition_issue`:
+Use `mcp__atlassian__jira_transition_issue`:
 ```json
 {
   "issue_key": "PROJ-123",
@@ -169,20 +169,20 @@ Use `mcp__atlassian-evinova__jira_transition_issue`:
 ### 4. Agile/Scrum Operations
 
 #### Working with Boards
-1. **Get boards**: `mcp__atlassian-evinova__jira_get_agile_boards`
+1. **Get boards**: `mcp__atlassian__jira_get_agile_boards`
    - Filter by: `board_name`, `project_key`, `board_type` (scrum/kanban)
 
-2. **Get board issues**: `mcp__atlassian-evinova__jira_get_board_issues`
+2. **Get board issues**: `mcp__atlassian__jira_get_board_issues`
    - Requires `board_id` and `jql` filter
 
 #### Working with Sprints
-1. **Get sprints**: `mcp__atlassian-evinova__jira_get_sprints_from_board`
+1. **Get sprints**: `mcp__atlassian__jira_get_sprints_from_board`
    - Filter by state: "active", "future", "closed"
 
-2. **Get sprint issues**: `mcp__atlassian-evinova__jira_get_sprint_issues`
+2. **Get sprint issues**: `mcp__atlassian__jira_get_sprint_issues`
    - Returns all issues in specified sprint
 
-3. **Create sprint**: `mcp__atlassian-evinova__jira_create_sprint`
+3. **Create sprint**: `mcp__atlassian__jira_create_sprint`
 ```json
 {
   "board_id": "1000",
@@ -193,17 +193,17 @@ Use `mcp__atlassian-evinova__jira_transition_issue`:
 }
 ```
 
-4. **Update sprint**: `mcp__atlassian-evinova__jira_update_sprint`
+4. **Update sprint**: `mcp__atlassian__jira_update_sprint`
 
 #### Working with Epics
 1. **Find epics**: Use JQL: `issuetype = Epic AND project = PROJ`
-2. **Link to epic**: `mcp__atlassian-evinova__jira_link_to_epic`
+2. **Link to epic**: `mcp__atlassian__jira_link_to_epic`
 3. **Find issues in epic**: Use JQL: `parent = EPIC-KEY`
 
 ### 5. Linking and Relationships
 
 #### Issue Links
-Use `mcp__atlassian-evinova__jira_create_issue_link`:
+Use `mcp__atlassian__jira_create_issue_link`:
 ```json
 {
   "link_type": "Blocks",
@@ -214,10 +214,10 @@ Use `mcp__atlassian-evinova__jira_create_issue_link`:
 }
 ```
 
-Get link types: `mcp__atlassian-evinova__jira_get_link_types`
+Get link types: `mcp__atlassian__jira_get_link_types`
 
 #### Remote Links (Web/Confluence)
-Use `mcp__atlassian-evinova__jira_create_remote_issue_link`:
+Use `mcp__atlassian__jira_create_remote_issue_link`:
 ```json
 {
   "issue_key": "PROJ-123",
@@ -231,17 +231,17 @@ Use `mcp__atlassian-evinova__jira_create_remote_issue_link`:
 ### 6. Comments and Collaboration
 
 #### Add Comment
-Use `mcp__atlassian-evinova__jira_add_comment`:
+Use `mcp__atlassian__jira_add_comment`:
 - Supports Markdown format
 - Visible in issue activity
 
 #### Get Comments
-Use `mcp__atlassian-evinova__jira_get_issue` with appropriate fields
+Use `mcp__atlassian__jira_get_issue` with appropriate fields
 
 ### 7. Batch Operations
 
 #### Batch Create Issues
-Use `mcp__atlassian-evinova__jira_batch_create_issues`:
+Use `mcp__atlassian__jira_batch_create_issues`:
 ```json
 {
   "issues": "[{\"project_key\":\"PROJ\",\"summary\":\"Task 1\",\"issue_type\":\"Task\"},{\"project_key\":\"PROJ\",\"summary\":\"Task 2\",\"issue_type\":\"Bug\"}]",
@@ -250,7 +250,7 @@ Use `mcp__atlassian-evinova__jira_batch_create_issues`:
 ```
 
 #### Batch Get Changelogs
-Use `mcp__atlassian-evinova__jira_batch_get_changelogs`:
+Use `mcp__atlassian__jira_batch_get_changelogs`:
 - Get history for multiple issues
 - Filter by specific fields
 - Cloud only feature
@@ -258,19 +258,19 @@ Use `mcp__atlassian-evinova__jira_batch_get_changelogs`:
 ### 8. Project and Version Management
 
 #### List Projects
-Use `mcp__atlassian-evinova__jira_get_all_projects`:
+Use `mcp__atlassian__jira_get_all_projects`:
 - Returns accessible projects
 - Respects JIRA_PROJECTS_FILTER if configured
 
 #### Get Project Issues
-Use `mcp__atlassian-evinova__jira_get_project_issues`:
+Use `mcp__atlassian__jira_get_project_issues`:
 - Returns all issues for specific project
 - Supports pagination
 
 #### Version Management
-1. **Get versions**: `mcp__atlassian-evinova__jira_get_project_versions`
-2. **Create version**: `mcp__atlassian-evinova__jira_create_version`
-3. **Batch create**: `mcp__atlassian-evinova__jira_batch_create_versions`
+1. **Get versions**: `mcp__atlassian__jira_get_project_versions`
+2. **Create version**: `mcp__atlassian__jira_create_version`
+3. **Batch create**: `mcp__atlassian__jira_batch_create_versions`
 
 ## Best Practices
 
@@ -392,7 +392,7 @@ JIRA instances heavily customize their field schemas with custom fields that var
 
 #### Step 1: Search by Keyword
 
-Use `mcp__atlassian-evinova__jira_search_fields` to find fields by partial name match:
+Use `mcp__atlassian__jira_search_fields` to find fields by partial name match:
 
 ```json
 {
@@ -672,7 +672,7 @@ This skill is automatically invoked when users:
 
 ## Notes
 
-- The Atlassian MCP (`mcp__atlassian-evinova`) prefix is used for all tools
+- The Atlassian MCP (`mcp__atlassian`) prefix is used for all tools
 - All date/time values use ISO 8601 format
 - JQL syntax is similar to SQL but has specific JIRA operators
 - Personal space keys in Confluence/JIRA start with `~` and must be quoted
