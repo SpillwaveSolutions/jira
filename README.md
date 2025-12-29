@@ -1,6 +1,26 @@
 # JIRA Skill for Claude Code
 
+[![Agent Skill Standard](https://img.shields.io/badge/Agent%20Skill%20Standard-Compatible-blue)](https://agentskills.io/)
+[![Platforms](https://img.shields.io/badge/Platforms-14%2B%20AI%20Agents-green)](https://skillzwave.ai/platforms/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A comprehensive Claude Code skill that provides intelligent guidance for managing JIRA issues, projects, and workflows through the Atlassian MCP server.
+
+## Table of Contents
+
+- [What is a Skill?](#what-is-a-skill)
+- [How This Skill Works](#how-this-skill-works)
+- [Installing with Skilz](#installing-with-skilz-universal-installer)
+- [Manual Installation](#manual-installation)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Common Workflows](#common-workflows)
+- [Best Practices](#best-practices)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+
+---
 
 ## What is a Skill?
 
@@ -24,11 +44,125 @@ This skill works hand-in-glove with the **Atlassian MCP server** (`mcp__atlassia
 
 When you ask Claude Code to work with JIRA, this skill ensures operations follow proven patterns, validate inputs properly, and handle JIRA's complexity gracefully.
 
-## Installation Levels
+---
+
+## Installing with Skilz (Universal Installer)
+
+The recommended way to install this skill across different AI coding agents is using the **skilz** universal installer.
+
+### Install Skilz
+
+```bash
+pip install skilz
+```
+
+This skill supports [Agent Skill Standard](https://agentskills.io/) which means it supports 14 plus coding agents including Claude Code, OpenAI Codex, Cursor and Gemini.
+
+
+### Git URL Options
+
+You can use either `-g` or `--git` with HTTPS or SSH URLs:
+
+```bash
+# HTTPS URL
+skilz install -g https://github.com/SpillwaveSolutions/jira
+
+# SSH URL
+skilz install --git git@github.com:SpillwaveSolutions/jira.git
+```
+
+### Claude Code
+
+Install to user home (available in all projects):
+```bash
+skilz install -g https://github.com/SpillwaveSolutions/jira
+```
+
+Install to current project only:
+```bash
+skilz install -g https://github.com/SpillwaveSolutions/jira --project
+```
+
+### OpenCode
+
+Install for [OpenCode](https://opencode.ai):
+```bash
+skilz install -g https://github.com/SpillwaveSolutions/jira --agent opencode
+```
+
+Project-level install:
+```bash
+skilz install -g https://github.com/SpillwaveSolutions/jira --project --agent opencode
+```
+
+### Gemini
+
+Project-level install for Gemini:
+```bash
+skilz install -g https://github.com/SpillwaveSolutions/jira --agent gemini
+```
+
+### OpenAI Codex
+
+Install for OpenAI Codex:
+```bash
+skilz install -g https://github.com/SpillwaveSolutions/jira --agent codex
+```
+
+Project-level install:
+```bash
+skilz install -g https://github.com/SpillwaveSolutions/jira --project --agent codex
+```
+
+
+### Install from Skillzwave Marketplace
+```
+# Claude to user home dir ~/.claude/skills
+skilz install SpillwaveSolutions_jira/jira
+
+# Claude skill in project folder ./claude/skills
+skilz install SpillwaveSolutions_jira/jira --project
+
+# OpenCode install to user home dir ~/.config/opencode/skills
+skilz install SpillwaveSolutions_jira/jira --agent opencode
+
+# OpenCode project level
+skilz install SpillwaveSolutions_jira/jira --agent opencode --project
+
+# OpenAI Codex install to user home dir ~/.codex/skills
+skilz install SpillwaveSolutions_jira/jira
+
+# OpenAI Codex project level ./.codex/skills
+skilz install SpillwaveSolutions_jira/jira --agent opencode --project
+
+
+# Gemini CLI (project level) -- only works with project level
+skilz install SpillwaveSolutions_jira/jira --agent gemini
+
+```
+
+See this site [skill Listing](https://skillzwave.ai/skill/SpillwaveSolutions__jira__jira__SKILL/) to see how to install this exact skill to 14+ different coding agents.
+
+
+### Other Supported Agents
+
+Skilz supports 14+ coding agents including Claude Code, OpenAI Codex, OpenCode, Cursor, Gemini CLI, GitHub Copilot CLI, Windsurf, Qwen Code, Aidr, and more.
+
+For the full list of supported platforms, visit [SkillzWave.ai/platforms](https://skillzwave.ai/platforms/) or see the [skilz-cli GitHub repository](https://github.com/SpillwaveSolutions/skilz-cli)
+
+
+<a href="https://skillzwave.ai/">Largest Agentic Marketplace for AI Agent Skills</a> and
+<a href="https://spillwave.com/">SpillWave: Leaders in AI Agent Development.</a>
+
+---
+
+## Manual Installation
+
+### Installation Levels
 
 This skill can be installed at multiple levels depending on your organizational structure and needs:
 
-### 1. Global Installation (User Level)
+#### 1. Global Installation (User Level)
 
 Install in your home directory for use across all projects:
 
@@ -38,7 +172,7 @@ Install in your home directory for use across all projects:
 
 **Use case**: You work with a single JIRA instance across all projects.
 
-### 2. Project-Level Installation
+#### 2. Project-Level Installation
 
 Install within a specific project directory:
 
@@ -48,7 +182,7 @@ Install within a specific project directory:
 
 **Use case**: Project-specific JIRA configuration or custom workflows that differ from other projects.
 
-### 3. Workspace-Level Installation
+#### 3. Workspace-Level Installation
 
 Install at a workspace directory that groups multiple related projects:
 
@@ -70,6 +204,8 @@ Claude Code follows this priority order when loading skills:
 3. **Global-level** (`~/.claude/skills/` in home directory)
 
 This allows project-specific customizations to override workspace or global defaults.
+
+---
 
 ## Multi-Instance JIRA Support
 
@@ -153,6 +289,8 @@ This allows you to:
 - Override global JIRA settings for specific projects
 - Maintain separate JIRA configurations without conflicts
 
+---
+
 ## Prerequisites
 
 ### Required MCP Server
@@ -197,25 +335,24 @@ Ensure your JIRA account has appropriate permissions for:
 - Managing sprints/epics (if using Agile features)
 - Transitioning issues through workflows
 
+---
+
 ## Quick Start
 
 ### 1. Install the Skill
 
+Using Skilz (recommended):
+```bash
+pip install skilz
+skilz install -g https://github.com/SpillwaveSolutions/jira
+```
+
+Or manually:
 ```bash
 # Global installation
 mkdir -p ~/.claude/skills/
 cd ~/.claude/skills/
-git clone <repository-url> jira
-
-# OR workspace installation
-mkdir -p ~/workspace/acme-corp/.claude/skills/
-cd ~/workspace/acme-corp/.claude/skills/
-git clone <repository-url> jira
-
-# OR project installation
-mkdir -p /path/to/project/.claude/skills/
-cd /path/to/project/.claude/skills/
-git clone <repository-url> jira
+git clone https://github.com/SpillwaveSolutions/jira.git jira
 ```
 
 ### 2. Configure Atlassian MCP
@@ -255,6 +392,8 @@ Claude Code will automatically:
 - Construct proper JQL queries
 - Handle workflows and transitions
 - Follow best practices from this skill
+
+---
 
 ## Features
 
@@ -296,6 +435,8 @@ Claude Code will automatically:
 - Create multiple issues efficiently
 - Get changelogs for multiple issues
 - Bulk operations on issue sets
+
+---
 
 ## File Structure
 
@@ -349,6 +490,8 @@ Architecture and patterns guide for Claude Code instances, documenting:
 - Custom field discovery methodology
 - Common command patterns
 
+---
+
 ## Common Workflows
 
 ### Creating Issues
@@ -393,6 +536,8 @@ Architecture and patterns guide for Claude Code instances, documenting:
 "What custom fields are available in project ENG?"
 ```
 
+---
+
 ## Best Practices
 
 ### 1. Always Validate Project Keys
@@ -425,6 +570,8 @@ Always link related work:
 "Create issue link: ENG-123 blocks ENG-124"
 ```
 
+---
+
 ## Troubleshooting
 
 ### "Project not found"
@@ -452,6 +599,8 @@ Always link related work:
 - Check `JIRA_URL` in environment configuration
 - Ensure API token matches the JIRA instance
 
+---
+
 ## Integration with Other Skills
 
 This JIRA skill can work alongside other Claude Code skills:
@@ -473,6 +622,8 @@ Link JIRA tickets to documentation:
 ```
 "Create remote link from ENG-123 to our Confluence page"
 ```
+
+---
 
 ## Advanced Usage
 
@@ -496,6 +647,8 @@ The `scripts/` directory can contain custom automation:
 - Sprint reports
 - Issue analysis and metrics
 - Custom workflows
+
+---
 
 ## Updates and Maintenance
 
@@ -526,6 +679,8 @@ git push team-fork main
 
 This allows sharing customizations across your team.
 
+---
+
 ## Support
 
 For issues or questions:
@@ -537,6 +692,8 @@ For issues or questions:
 5. **Check JIRA permissions** for your account
 6. **Review CLAUDE.md** for architecture patterns
 
+---
+
 ## Contributing
 
 To improve this skill:
@@ -547,9 +704,13 @@ To improve this skill:
 4. Share automation scripts in `scripts/`
 5. Update best practices based on experience
 
+---
+
 ## License
 
 This skill is designed for use with Claude Code and the Atlassian MCP server.
+
+---
 
 ## Related Resources
 
@@ -558,3 +719,5 @@ This skill is designed for use with Claude Code and the Atlassian MCP server.
 - [Atlassian JIRA Documentation](https://support.atlassian.com/jira/)
 - [JQL Reference](https://support.atlassian.com/jira-software-cloud/docs/use-advanced-search-with-jira-query-language-jql/)
 - [Atlassian MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/atlassian)
+- [SkillzWave Marketplace](https://skillzwave.ai/)
+- [SpillWave Solutions](https://spillwave.com/)
