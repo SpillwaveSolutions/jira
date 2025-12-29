@@ -1,6 +1,29 @@
+---
+name: jira
+description: Manages JIRA issues, projects, and workflows using Atlassian MCP. Use when asked to "create JIRA ticket", "search JIRA", "update JIRA issue", "transition issue", "sprint planning", or "epic management".
+---
+
 # JIRA Management Skill
 
 A comprehensive Claude Code skill for managing JIRA issues, projects, and workflows using the Atlassian MCP server.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Skill Workflow](#skill-workflow)
+  - [Issue Creation](#1-issue-creation-workflow)
+  - [Issue Search and Management](#2-issue-search-and-management)
+  - [Workflow and Transitions](#3-workflow-and-transitions)
+  - [Agile/Scrum Operations](#4-agilescrum-operations)
+  - [Linking and Relationships](#5-linking-and-relationships)
+  - [Comments and Collaboration](#6-comments-and-collaboration)
+  - [Batch Operations](#7-batch-operations)
+  - [Project and Version Management](#8-project-and-version-management)
+- [Best Practices](#best-practices)
+- [Common Use Cases](#common-use-cases)
+- [References](#references)
+- [Troubleshooting](#troubleshooting)
 
 ## Overview
 
@@ -49,10 +72,7 @@ Use `mcp__atlassian__jira_get_all_projects` to:
 - Confirm project key matches exactly
 
 #### Step 3: Search Available Fields (if needed)
-Use `mcp__atlassian__jira_search_fields` to:
-- Find custom field names and IDs
-- Understand field requirements
-- Example: `mcp__atlassian__jira_search_fields` with keyword "epic"
+Use `mcp__atlassian__jira_search_fields` to find custom field names and IDs. See [Custom Field Discovery](references/custom_field_discovery.md) for detailed methodology.
 
 #### Step 4: Create Issue
 Use `mcp__atlassian__jira_create_issue` with:
@@ -81,39 +101,21 @@ Use `mcp__atlassian__jira_create_issue` with:
 ### 2. Issue Search and Management
 
 #### Searching Issues
-Use `mcp__atlassian__jira_search` with JQL:
+Use `mcp__atlassian__jira_search` with JQL. For comprehensive JQL documentation, see [JQL Guide](references/jql_guide.md).
 
-**Note:** For comprehensive JQL documentation including advanced queries, historical operators,
-sprint/epic management, date functions, and best practices, see `references/jql_guide.md`.
-
-**Common JQL Patterns:**
+**Essential JQL Patterns:**
 ```jql
-# Find all open issues in a project
+# Open issues in project
 project = PROJ AND status = Open
 
-# Find your assigned issues
+# Your assigned issues
 assignee = currentUser() AND status != Done
-
-# Find recently updated issues
-updated >= -7d AND project = PROJ
-
-# Find issues in Epic
-parent = PROJ-123
-
-# Find issues by label
-labels = frontend AND project = PROJ
-
-# Complex query
-project = PROJ AND (status = "In Progress" OR status = "In Review") AND priority = High
 
 # Issues in current sprint
 sprint IN openSprints()
 
-# Historical search - issues that were blocked
-status WAS "Blocked"
-
-# Issues changed in last week
-status CHANGED AFTER -7d
+# Recently updated
+updated >= -7d AND project = PROJ
 ```
 
 Parameters:
@@ -209,8 +211,7 @@ Use `mcp__atlassian__jira_create_issue_link`:
   "link_type": "Blocks",
   "inward_issue_key": "PROJ-123",
   "outward_issue_key": "PROJ-456",
-  "comment": "This issue blocks the other",
-  "comment_visibility": {"type": "group", "value": "jira-users"}
+  "comment": "This issue blocks the other"
 }
 ```
 
@@ -285,35 +286,21 @@ Use `mcp__atlassian__jira_get_project_issues`:
 - Specify fields explicitly for better performance
 
 ### 3. JQL Query Construction
-- **See `references/jql_guide.md` for comprehensive JQL documentation**
-- Use proper JQL syntax with operators: `=`, `!=`, `~`, `>`, `<`, `>=`, `<=`
-- Quote values with spaces: `status = "In Progress"`
-- Quote personal space keys: `space = "~username"`
-- Use functions: `currentUser()`, `startOfDay()`, `startOfWeek()`
-- Leverage historical operators: `WAS`, `CHANGED`, `WAS IN`, `WAS NOT`
-- Use sprint functions: `openSprints()`, `closedSprints()`, `futureSprints()`
+See [JQL Guide](references/jql_guide.md) for comprehensive documentation.
 
 ### 4. Error Handling
 - Check for required fields before creating issues
 - Validate transition IDs before executing
 - Handle permission errors gracefully
-- Provide clear error messages to user
 
 ### 5. Efficiency
 - Use batch operations for multiple issues
 - Paginate large result sets
 - Use JQL filters to reduce result size
-- Leverage project filters when applicable
-
-### 6. User Experience
-- Always confirm project key with user
-- Show created issue key immediately
-- Provide links to view in browser when possible
-- Summarize results of batch operations
 
 ## Common Use Cases
 
-### Use Case 1: Create Story with Subtasks
+### Create Story with Subtasks
 ```
 1. Create Epic (if needed)
 2. Create Story and link to Epic
@@ -321,320 +308,36 @@ Use `mcp__atlassian__jira_get_project_issues`:
 4. Optionally add to sprint
 ```
 
-### Use Case 2: Bug Triage Workflow
+### Bug Triage Workflow
 ```
 1. Search for bugs: issuetype = Bug AND status = Open
-2. For each bug:
-   - Update priority
-   - Assign to developer
-   - Add to sprint
-   - Transition to "In Progress"
+2. For each bug: Update priority, assign, add to sprint, transition
 ```
 
-### Use Case 3: Sprint Planning
+### Sprint Planning
 ```
 1. Get active sprint
 2. Search backlog issues
 3. Move selected issues to sprint
-4. Update estimates
-5. Assign to team members
+4. Update estimates and assign
 ```
 
-### Use Case 4: Release Management
+### Release Management
 ```
 1. Create version for release
 2. Search issues: fixVersion = "1.0.0"
 3. Verify all are Done
-4. Create release notes from issue summaries
-5. Update version status
+4. Create release notes
 ```
-
-### Use Case 5: Epic Tracking
-```
-1. Create Epic
-2. Search and link related issues
-3. Get Epic progress (search child issues)
-4. Generate status report
-```
-
-## Templates
-
-See `templates/` directory for:
-- `issue_creation.json`: Standard issue creation templates
-- `jql_queries.txt`: Common JQL query patterns
-- `workflow_scripts.md`: Common workflow automation scripts
 
 ## References
 
-See `references/` directory for:
-- `jira_field_reference.md`: Common JIRA fields and their usage
-- `jql_guide.md`: Comprehensive JQL query guide
-- `workflow_patterns.md`: Common workflow patterns
+See `references/` directory for detailed documentation:
+- [jql_guide.md](references/jql_guide.md) - Comprehensive JQL query guide
+- [custom_field_discovery.md](references/custom_field_discovery.md) - Custom field discovery methodology
 
-## Integration Examples
-
-See `scripts/` directory for:
-- `bulk_issue_creator.py`: Create multiple issues from CSV
-- `sprint_reporter.py`: Generate sprint reports
-- `issue_analyzer.py`: Analyze issue patterns
-
-## Custom Field Discovery Methodology
-
-JIRA instances heavily customize their field schemas with custom fields that vary by organization, project, and issue type. These fields have opaque identifiers (e.g., `customfield_10352`) that must be discovered and mapped to human-readable names for automation.
-
-### The Challenge
-
-**Problem**: You need to create tickets with specific fields, but you only know the human-readable name (e.g., "Owning Team", "Acceptance Criteria", "Risk Assessment") and not the custom field ID required by the API.
-
-**Symptom**: Creating tickets fails with "field not found" or required fields are silently ignored because you're using the wrong identifier.
-
-### Discovery Workflow
-
-#### Step 1: Search by Keyword
-
-Use `mcp__atlassian__jira_search_fields` to find fields by partial name match:
-
-```json
-{
-  "keyword": "owning",
-  "limit": 10
-}
-```
-
-**Returns:**
-```json
-[
-  {
-    "id": "customfield_11077",
-    "name": "Owning Team",
-    "custom": true,
-    "schema": {
-      "type": "option",
-      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:select"
-    }
-  }
-]
-```
-
-**Key Information Extracted:**
-- **Field ID**: `customfield_11077` (use this in API calls)
-- **Field Name**: "Owning Team" (human-readable)
-- **Field Type**: `option` with `select` custom type (dropdown/single-select)
-- **Custom**: `true` (not a standard JIRA field)
-
-#### Step 2: Understand Field Type
-
-The `schema.type` and `schema.custom` fields tell you how to format values:
-
-| Schema Type | Custom Type | Value Format | Example |
-|-------------|-------------|--------------|---------|
-| `string` | `textarea` | Plain string | `"Risk assessment text"` |
-| `number` | `float` | Number | `3` or `3.5` |
-| `option` | `select` | Object with value | `{"value": "Team A"}` |
-| `array` | `multiselect` | Array of objects | `[{"value": "Label1"}, {"value": "Label2"}]` |
-| `user` | - | User identifier | `"user@example.com"` |
-| `date` | - | ISO 8601 date | `"2025-01-15"` |
-| `datetime` | - | ISO 8601 datetime | `"2025-01-15T10:30:00.000+0000"` |
-
-#### Step 3: Test with Single Issue
-
-Create a test issue using the discovered field ID:
-
-```json
-{
-  "project_key": "PROJ",
-  "summary": "Test custom field",
-  "issue_type": "Task",
-  "additional_fields": {
-    "customfield_11077": {
-      "value": "Platform Team"
-    }
-  }
-}
-```
-
-**Verify**: Check the created issue in JIRA UI to confirm the field populated correctly.
-
-#### Step 4: Document the Mapping
-
-Once verified, document the field mapping in a project-specific configuration file:
-
-```json
-{
-  "project_key": "PROJ",
-  "custom_fields": {
-    "owning_team": {
-      "field_id": "customfield_11077",
-      "field_name": "Owning Team",
-      "field_type": "select",
-      "required": true,
-      "description": "Team responsible for this work"
-    },
-    "acceptance_criteria": {
-      "field_id": "customfield_10352",
-      "field_name": "Acceptance Criteria_gxp",
-      "field_type": "textarea",
-      "required": true,
-      "description": "GXP acceptance criteria"
-    },
-    "story_points": {
-      "field_id": "customfield_10060",
-      "field_name": "Story Points",
-      "field_type": "number",
-      "required": false
-    }
-  }
-}
-```
-
-### Advanced Discovery Techniques
-
-#### Discovering Required Fields
-
-Some fields are required by project configuration or workflow rules. To discover these:
-
-1. **Attempt to create without the field** - The error message often reveals required fields
-2. **Check project settings** - Use `jira_get_all_projects` and examine field configurations
-3. **Inspect existing issues** - Use `jira_get_issue` with `fields=*all` to see all populated fields
-
-#### Discovering Field Value Constraints
-
-For `select`, `multiselect`, or `option` fields, you need to know valid values:
-
-**Method 1: Inspect existing issues**
-```bash
-# Get issue with all fields
-jira_get_issue(issue_key="PROJ-123", fields="*all")
-
-# Look for the custom field in response
-# Example: "customfield_11077": {"value": "Platform Team"}
-```
-
-**Method 2: Trial and error with descriptive errors**
-- JIRA often returns error messages listing valid options when you provide an invalid value
-
-**Method 3: Admin access**
-- If you have admin access, check field configuration in JIRA admin panel for allowed values
-
-#### Handling Multi-Project Schemas
-
-Different projects may use different field IDs for similar concepts:
-
-```json
-{
-  "projects": {
-    "PROJ-A": {
-      "owning_team_field": "customfield_11077"
-    },
-    "PROJ-B": {
-      "owning_team_field": "customfield_12034"
-    }
-  }
-}
-```
-
-**Best Practice**: Store mappings per project, not globally.
-
-### Common Patterns
-
-#### Pattern 1: GXP/Compliance Fields
-
-Regulated industries often have custom fields for compliance:
-- Acceptance Criteria (GXP)
-- Risk Assessment (GXP)
-- Validation Status
-- Quality Gate
-
-**Discovery**: Search for keywords like "gxp", "compliance", "validation", "risk", "acceptance"
-
-#### Pattern 2: Agile/Scrum Fields
-
-Agile teams add custom fields:
-- Story Points (often `customfield_10060` or `customfield_10016`)
-- Sprint (often `customfield_10020`)
-- Epic Link (often `customfield_10014`)
-
-**Discovery**: Search for "story", "sprint", "epic"
-
-#### Pattern 3: Team/Ownership Fields
-
-Organizations add team tracking:
-- Owning Team / Responsible Team
-- Technical Lead
-- Product Owner
-
-**Discovery**: Search for "team", "owner", "lead", "responsible"
-
-### Automation Strategy
-
-#### 1. Build a Field Cache
-
-```json
-{
-  "last_updated": "2025-01-15T10:00:00Z",
-  "fields": [
-    {
-      "id": "customfield_11077",
-      "name": "Owning Team",
-      "type": "select",
-      "projects": ["PROJ-A", "PROJ-B"]
-    }
-  ]
-}
-```
-
-**Refresh** the cache periodically (e.g., weekly) or when field discovery fails.
-
-#### 2. Create Field Accessor Functions
-
-```python
-def get_field_id(field_name, project_key):
-    """Get custom field ID by name and project."""
-    cache = load_field_cache()
-    for field in cache['fields']:
-        if field['name'] == field_name and project_key in field['projects']:
-            return field['id']
-    # Fallback: search fields API
-    return search_and_cache_field(field_name, project_key)
-```
-
-#### 3. Validate Before Creation
-
-```python
-def validate_custom_fields(project_key, fields):
-    """Ensure all custom fields exist and have correct format."""
-    for field_name, value in fields.items():
-        field_id = get_field_id(field_name, project_key)
-        field_type = get_field_type(field_id)
-        validate_value_format(value, field_type)
-```
-
-### Error Recovery
-
-When field discovery or usage fails:
-
-**Error**: `"Field 'customfield_XXXXX' cannot be set"`
-- **Cause**: Field doesn't exist, wrong project, or wrong issue type
-- **Solution**: Re-run field search, check project/issue type constraints
-
-**Error**: `"Field value is not valid"`
-- **Cause**: Incorrect value format for field type
-- **Solution**: Check schema type, verify value format matches expected type
-
-**Error**: `"Field is required"`
-- **Cause**: Missing required custom field
-- **Solution**: Search for required fields, add to field mappings
-
-### Best Practices Summary
-
-1. **Search First**: Always use `jira_search_fields` before assuming field IDs
-2. **Document Mappings**: Store field ID mappings in project configuration files
-3. **Test Thoroughly**: Create test issues to verify field IDs and value formats
-4. **Cache Strategically**: Build field caches to reduce API calls
-5. **Project-Specific**: Don't assume field IDs are the same across projects
-6. **Type-Aware**: Respect field types when formatting values
-7. **Error-Friendly**: Expect field discovery to fail, have fallback strategies
-8. **Version Control**: Check field mappings into version control for team sharing
+See `templates/` directory for:
+- [issue_creation.json](templates/issue_creation.json) - Standard issue creation templates
 
 ## Troubleshooting
 
@@ -656,7 +359,7 @@ When field discovery or usage fails:
 - Verify permissions for transition
 
 **Issue: "Custom field not found"**
-- Use `jira_search_fields` to find custom field ID
+- See [Custom Field Discovery](references/custom_field_discovery.md) for discovery methodology
 - Format: `customfield_10010`
 - Check if field applies to issue type
 
@@ -675,5 +378,4 @@ This skill is automatically invoked when users:
 - The Atlassian MCP (`mcp__atlassian`) prefix is used for all tools
 - All date/time values use ISO 8601 format
 - JQL syntax is similar to SQL but has specific JIRA operators
-- Personal space keys in Confluence/JIRA start with `~` and must be quoted
 - Cloud vs Server/Data Center may have feature differences
